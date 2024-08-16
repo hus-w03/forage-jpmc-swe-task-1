@@ -1,0 +1,58 @@
+From 0bae848b4b0e3a953b5fbe13be86b1056c776dfa Mon Sep 17 00:00:00 2001
+From: hus-w03 <hwitwit47@gmail.com>
+Date: Fri, 16 Aug 2024 19:40:50 +0100
+Subject: [PATCH] modified:   client3.py
+
+---
+ client3.py | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+
+diff --git a/.venv/pyvenv.cfg b/.venv/pyvenv.cfg
+new file mode 100644
+index 0000000..ca83db9
+--- /dev/null
++++ b/.venv/pyvenv.cfg
+@@ -0,0 +1,5 @@
++home = C:\Users\hwitw\AppData\Local\Programs\Python\Python312
++include-system-site-packages = false
++version = 3.12.5
++executable = C:\Users\hwitw\AppData\Local\Programs\Python\Python312\python.exe
++command = C:\Users\hwitw\AppData\Local\Programs\Python\Python312\python.exe -m venv c:\Users\hwitw\Documents\python\forage-jpmc-swe-task-1.venv
+diff --git a/client3.py b/client3.py
+index 3fc09b7..65967b2 100644
+--- a/client3.py
++++ b/client3.py
+@@ -35,14 +35,16 @@ def getDataPoint(quote):
+     stock = quote['stock']
+     bidprice = float(quote['topbid']['price'])
+     askprice = float(quote['topask']['price'])
+price = bid_price
++    price = (bid_price + ask_price) / 2
+     return stock, bid_price, ask_price, price
+ 
+ 
+ def getRatio(price_a, price_b):
+     """ Get ratio of price_a and price_b """
+     """ ------------- Update this function ------------- """
+return 1
++    if (price_b == 0):
++        return
++    return price_a / price_b
+ 
+ 
+ # Main
+@@ -52,8 +54,10 @@ if __name == "__main":
+         quotes = json.loads(urllib.request.urlopen(QUERY.format(random.random())).read())
+ 
+         """ ----------- Update to get the ratio --------------- """
++        prices = {}
+         for quote in quotes:
+             stock, bid_price, ask_price, price = getDataPoint(quote)
++            prices[stock] = price
+             print("Quoted %s at (bid:%s, ask:%s, price:%s)" % (stock, bid_price, ask_price, price))
+ 
+print("Ratio %s" % getRatio(price, price))
++        print("Ratio %s" % getRatio(prices["ABC"], prices["DEF"]))
+-- 
+2.46.0.windows.1
